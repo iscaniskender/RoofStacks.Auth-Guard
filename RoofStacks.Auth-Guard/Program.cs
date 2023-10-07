@@ -2,6 +2,7 @@ using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using RoofStacks.Auth_Guard;
+using RoofStacks.Auth_Guard.Middlewares;
 using RoofStacks.Auth_Guard.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var assemblyName = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 
+builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 #region IdentitySettings
 
 builder.Services.AddIdentityServer()
@@ -41,6 +43,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
