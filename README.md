@@ -19,8 +19,12 @@ The `RoofStacks.Auth-Guard` project is designed to secure Employee and Company A
 This command will update the database and create the seed data.
 
 ## Usage
-
-1. **Obtaining AccessToken**: You can get an AccessToken using the CURL command below.
+1. **Projects Ports**:
+   RoofStacks.Auth-Guard -> port https://localhost:5002
+   RoofStacks.CompanyAPI -> port https://localhost:5004
+   RoofStacks.EmployeeAPI -> port https://localhost:5006
+   
+3. **Obtaining AccessToken**: You can get an AccessToken using the CURL command below.
 
     ```bash
     curl --location 'https://localhost:5002/connect/token' \
@@ -32,4 +36,4 @@ This command will update the database and create the seed data.
 
     Replace `{}` with the corresponding `client_id` and `client_secret` information.
 
-2. **API Access**: You can access the APIs within the scope of the permissions granted by the obtained AccessToken.
+4. **API Access**: You can access the APIs within the scope of the permissions granted by the obtained AccessToken.
