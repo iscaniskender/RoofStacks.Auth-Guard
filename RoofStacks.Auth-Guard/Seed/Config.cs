@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.Models;
 
-namespace RoofStacks.Auth_Guard
+namespace RoofStacks.Auth_Guard.Seed
 {
     public static class Config
     {
@@ -35,7 +35,7 @@ namespace RoofStacks.Auth_Guard
 
         public static IEnumerable<Client> GetClients()
         {
-            return new List<Client> 
+            return new List<Client>
             {
                 new Client
                 {
@@ -46,7 +46,7 @@ namespace RoofStacks.Auth_Guard
                         new Secret("CompanyAPISecret".Sha256())
                     },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = { "companyAPI.read", "companyAPI.write", "companyAPI.delete", "employeeAPI.read" }
+                    AllowedScopes = { "companyAPI.read", "companyAPI.write", "companyAPI.delete", "employeeAPI.read" },
                 },
 
                 new Client
@@ -59,6 +59,7 @@ namespace RoofStacks.Auth_Guard
                     },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = { "employeeAPI.read", "employeeAPI.write", "employeeAPI.delete", "companyAPI.read" }
+                
                 }
             };
         }

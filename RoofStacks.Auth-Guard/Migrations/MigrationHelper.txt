@@ -1,0 +1,2 @@
+update-database -Context ConfigurationDbContext
+add-migration mig1 -Context ConfigurationDbContext
