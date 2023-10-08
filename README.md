@@ -26,18 +26,22 @@ This command will update the PostgreSQL database and create the seed data.
    - RoofStacks.CompanyAPI -> port `https://localhost:5004`
    - RoofStacks.EmployeeAPI -> port `https://localhost:5006`
 
-2. **Obtaining AccessToken**: You can get an AccessToken using the CURL command below.
+2. **Obtaining AccessToken**: You can get an AccessToken using the CURL command below. For example, to get an access token for the Employee API, use `client_id=EmployeeAPP` and `client_secret=EmployeeAPISecret`. Similarly, for the Company API, use `client_id=CompanyAPP` and `client_secret=CompanyAPISecret`.
 
     ```bash
     curl --location 'https://localhost:5002/connect/token' \
     --header 'Content-Type: application/x-www-form-urlencoded' \
-    --data-urlencode 'client_id={}' \
-    --data-urlencode 'client_secret={}' \
+    --data-urlencode 'client_id=EmployeeAPP' \
+    --data-urlencode 'client_secret=EmployeeAPISecret' \
     --data-urlencode 'grant_type=client_credentials'
     ```
 
-    Replace `{}` with the corresponding `client_id` and `client_secret` information.
+    ```bash
+    curl --location 'https://localhost:5002/connect/token' \
+    --header 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode 'client_id=CompanyAPP' \
+    --data-urlencode 'client_secret=CompanyAPISecret' \
+    --data-urlencode 'grant_type=client_credentials'
+    ```
 
 3. **API Access**: You can access the APIs within the scope of the permissions granted by the obtained AccessToken.
-
-Bu şekilde GitHub README dosyanızı güncelleyebilirsiniz.
