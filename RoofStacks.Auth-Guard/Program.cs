@@ -18,7 +18,7 @@ var assemblyName = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 builder.Services.AddIdentityServer()
     .AddConfigurationStore(opts =>
     {
-        opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"),
+        opts.ConfigureDbContext = c => c.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlDb"),
             sqlopts => sqlopts.MigrationsAssembly(assemblyName));
     })
     .AddDeveloperSigningCredential();
