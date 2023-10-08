@@ -18,6 +18,8 @@ namespace RoofStacks.EmployeeAPI.Controllers
 
         /// <summary>
         /// Initializes a new instance of the EmployeesController class.
+        ///
+        /// Requires the user to have 'Read' permission.
         /// </summary>
         /// <param name="employeeService">The service to handle Employee data.</param>
         public EmployeesController(IEmployeeService employeeService)
@@ -27,6 +29,7 @@ namespace RoofStacks.EmployeeAPI.Controllers
 
         /// <summary>
         /// Retrieves all employees.
+        /// Requires the user to have 'Read' permission.
         /// </summary>
         /// <returns>A list of Employee entities.</returns>
         [HttpGet]
@@ -39,6 +42,7 @@ namespace RoofStacks.EmployeeAPI.Controllers
 
         /// <summary>
         /// Retrieves a specific employee by their ID.
+        /// Requires the user to have 'Read' permission.
         /// </summary>
         /// <param name="id">The ID of the employee.</param>
         /// <returns>The Employee entity.</returns>
@@ -55,6 +59,7 @@ namespace RoofStacks.EmployeeAPI.Controllers
 
         /// <summary>
         /// Adds a new employee.
+        /// Requires the user to have 'Write' permission.
         /// </summary>
         /// <param name="employee">The new Employee entity to add.</param>
         /// <returns>The newly created Employee entity.</returns>
@@ -68,6 +73,7 @@ namespace RoofStacks.EmployeeAPI.Controllers
 
         /// <summary>
         /// Updates an existing employee.
+        /// Requires the user to have 'Write' permission.
         /// </summary>
         /// <param name="id">The ID of the employee to update.</param>
         /// <param name="updatedEmployee">The updated Employee entity.</param>
@@ -86,6 +92,7 @@ namespace RoofStacks.EmployeeAPI.Controllers
 
         /// <summary>
         /// Deletes a specific employee by their ID.
+        /// Requires the user to have 'Delete' permission.
         /// </summary>
         /// <param name="id">The ID of the employee to delete.</param>
         /// <returns>No content.</returns>
