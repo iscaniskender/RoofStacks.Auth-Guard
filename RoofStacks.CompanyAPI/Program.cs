@@ -15,35 +15,50 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 #region Authentication Settings
+
+// Configure authentication settings for the application using JWT (JSON Web Tokens).
 builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)  // Add authentication middleware
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
     {
+        // Set the authority to validate the tokens. Typically, this is your Identity Server URL.
         opts.Authority = builder.Configuration["JwtSettings:AuthServerUrl"];
+
+        // Set the audience that tokens must have to be considered valid.
         opts.Audience = builder.Configuration["JwtSettings:AudProp"];
     });
 
-
 #endregion
+
 #region Authorization Settings
 
+// Configure authorization settings for the application.
 builder.Services.AddAuthorization(opts =>
 {
+    // Add a policy for read operations, requiring the "company.read" scope claim.
     opts.AddPolicy("Read", policy =>
     {
+        // Require a scope claim with value "company.read"
         policy.RequireClaim("scope", "company.read");
     });
+
+    // Add a policy for write operations, requiring the "company.write" scope claim.
     opts.AddPolicy("Write", policy =>
     {
+        // Require a scope claim with value "company.write"
         policy.RequireClaim("scope", "company.write");
     });
+
+    // Add a policy for delete operations, requiring the "company.delete" scope claim.
     opts.AddPolicy("Delete", policy =>
     {
+        // Require a scope claim with value "company.delete"
         policy.RequireClaim("scope", "company.delete");
     });
 });
 
 #endregion
+
 
 var app = builder.Build();
 

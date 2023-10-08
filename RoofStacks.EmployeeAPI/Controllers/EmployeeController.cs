@@ -1,34 +1,49 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RoofStacks.EmployeeAPI.Enums;
 using RoofStacks.EmployeeAPI.Model;
 using RoofStacks.EmployeeAPI.Services;
 
 namespace RoofStacks.EmployeeAPI.Controllers
 {
+    /// <summary>
+    /// Controller responsible for managing Employee data.
+    /// Provides endpoints for CRUD operations on Employee entities.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
 
+        /// <summary>
+        /// Initializes a new instance of the EmployeesController class.
+        /// </summary>
+        /// <param name="employeeService">The service to handle Employee data.</param>
         public EmployeesController(IEmployeeService employeeService)
         {
             _employeeService = employeeService;
         }
 
-        // GET: api/employees
+        /// <summary>
+        /// Retrieves all employees.
+        /// </summary>
+        /// <returns>A list of Employee entities.</returns>
         [HttpGet]
-        [Authorize(Policy = "Rad")]
+        [Authorize(Policy = AuthorizePolicys.Read)]
         public IActionResult Get()
         {
             var employees = _employeeService.GetEmployees();
             return Ok(employees);
         }
 
-        // GET: api/employees/1
+        /// <summary>
+        /// Retrieves a specific employee by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the employee.</param>
+        /// <returns>The Employee entity.</returns>
         [HttpGet("{id}")]
-        [Authorize(Policy = "Read")]
+        [Authorize(Policy = AuthorizePolicys.Read)]
         public IActionResult Get(int id)
         {
             var employee = _employeeService.GetEmployeeById(id);
@@ -38,18 +53,27 @@ namespace RoofStacks.EmployeeAPI.Controllers
             return Ok(employee);
         }
 
-        // POST: api/employees
+        /// <summary>
+        /// Adds a new employee.
+        /// </summary>
+        /// <param name="employee">The new Employee entity to add.</param>
+        /// <returns>The newly created Employee entity.</returns>
         [HttpPost]
-        [Authorize(Policy = "Write")]
+        [Authorize(Policy = AuthorizePolicys.Write)]
         public IActionResult Post([FromBody] Employee employee)
         {
             var newEmployee = _employeeService.AddEmployee(employee);
             return CreatedAtAction(nameof(Get), new { id = newEmployee.Id }, newEmployee);
         }
 
-        // PUT: api/employees/1
+        /// <summary>
+        /// Updates an existing employee.
+        /// </summary>
+        /// <param name="id">The ID of the employee to update.</param>
+        /// <param name="updatedEmployee">The updated Employee entity.</param>
+        /// <returns>No content.</returns>
         [HttpPut("{id}")]
-        [Authorize(Policy = "Write")]
+        [Authorize(Policy = AuthorizePolicys.Write)]
         public IActionResult Put(int id, [FromBody] Employee updatedEmployee)
         {
             var employee = _employeeService.GetEmployeeById(id);
@@ -60,9 +84,13 @@ namespace RoofStacks.EmployeeAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/employees/1
+        /// <summary>
+        /// Deletes a specific employee by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the employee to delete.</param>
+        /// <returns>No content.</returns>
         [HttpDelete("{id}")]
-        [Authorize(Policy = "Delete")]
+        [Authorize(Policy = AuthorizePolicys.Delete)]
         public IActionResult Delete(int id)
         {
             var employee = _employeeService.GetEmployeeById(id);
@@ -73,5 +101,4 @@ namespace RoofStacks.EmployeeAPI.Controllers
             return NoContent();
         }
     }
-
 }

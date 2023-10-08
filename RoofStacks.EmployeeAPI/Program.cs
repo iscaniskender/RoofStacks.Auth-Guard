@@ -12,39 +12,46 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
-#region Token Settings
+#region Authentication Settings
 
-
+// Configure authentication settings for the application using JWT (JSON Web Tokens).
 builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)  // Add authentication middleware
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
     {
+        // Set the authority to validate the tokens. Typically, this is your Identity Server URL.
         opts.Authority = builder.Configuration["JwtSettings:AuthServerUrl"];
+
+        // Set the audience that tokens must have to be considered valid.
         opts.Audience = builder.Configuration["JwtSettings:AudProp"];
     });
 
-
 #endregion
+
 #region Authorization Settings
 
-
+// Configure authorization settings for the application.
 builder.Services.AddAuthorization(opts =>
 {
-    opts.AddPolicy("ReadEmployee", policy =>
+    // Add a policy for read operations, requiring the "company.read" scope claim.
+    opts.AddPolicy("Read", policy =>
     {
-        policy.RequireClaim("scope", "employee.read");
+        // Require a scope claim with value "company.read"
+        policy.RequireClaim("scope", "company.read");
     });
-    opts.AddPolicy("WriteEmployee", policy =>
+
+    // Add a policy for write operations, requiring the "company.write" scope claim.
+    opts.AddPolicy("Write", policy =>
     {
-        policy.RequireClaim("scope", "employee.write");
+        // Require a scope claim with value "company.write"
+        policy.RequireClaim("scope", "company.write");
     });
-    opts.AddPolicy("UpdateOrCreateEmployee", policy =>
+
+    // Add a policy for delete operations, requiring the "company.delete" scope claim.
+    opts.AddPolicy("Delete", policy =>
     {
-        policy.RequireClaim("scope", "employee.update");
-    });
-    opts.AddPolicy("DeleteEmployee", policy =>
-    {
-        policy.RequireClaim("scope", "employee.delete");
+        // Require a scope claim with value "company.delete"
+        policy.RequireClaim("scope", "company.delete");
     });
 });
 
@@ -66,5 +73,4 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();

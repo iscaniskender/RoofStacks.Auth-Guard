@@ -1,23 +1,20 @@
-using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
-using RoofStacks.Auth_Guard;
-using RoofStacks.Auth_Guard.Middlewares;
+using Microsoft.Extensions.Logging;
 using RoofStacks.Auth_Guard.Seed;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 var assemblyName = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 
-builder.Services.AddTransient<GlobalExceptionHandlingMiddleware>();
 #region IdentitySettings
 
+// Initialize IdentityServer with configuration options
 builder.Services.AddIdentityServer()
     .AddConfigurationStore(opts =>
     {
@@ -25,8 +22,8 @@ builder.Services.AddIdentityServer()
             sqlopts => sqlopts.MigrationsAssembly(assemblyName));
     })
     .AddDeveloperSigningCredential();
-
 #endregion
+
 
 var app = builder.Build();
 
@@ -40,12 +37,7 @@ using (var serviceScope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
 }
-
-app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
-
 app.UseHttpsRedirection();
 
 app.UseIdentityServer();
@@ -53,5 +45,9 @@ app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllers();
+    
+app.UseMiddleware<IdentityServerLoggingMiddleware>();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.Run();
